@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
+@RequestMapping("/home")
 public class HomeController {
     @Autowired
     private NotesService notesService;
@@ -21,4 +22,23 @@ public class HomeController {
 
     @Autowired
     private FilesService filesService;
+
+
+    public HomeController(MessageListService messageListService) {
+        this.messageListService = messageListService;
+    }
+
+    @GetMapping()
+    public String getHomePage(MessageForm messageForm, Model model) {
+        model.addAttribute("greetings", this.messageListService.getMessages());
+        return "home";
+    }
+
+    @PostMapping()
+    public String addMessage(MessageForm messageForm, Model model) {
+        messageListService.addMessage(messageForm.getText());
+        model.addAttribute("greetings", messageListService.getMessages());
+        messageForm.setText("");
+        return "home";
+    }
 }
