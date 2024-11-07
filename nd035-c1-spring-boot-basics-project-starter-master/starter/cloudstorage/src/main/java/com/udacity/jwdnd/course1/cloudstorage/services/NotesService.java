@@ -3,10 +3,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
-
 @Service
-public class FilesService {
-    public List<String> getAllFiles() {
-        return List.of("File1.txt", "File2.png"); // Dữ liệu mẫu
+public class NotesService {
+    public List<String> getAllNotes() {
+        return List.of("Note 1", "Note 2", "Note 3"); // Dữ liệu mẫu
     }
 }
