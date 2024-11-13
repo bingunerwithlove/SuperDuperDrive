@@ -10,11 +10,10 @@ import java.util.Collections;
 public class SuperUser implements UserDetails {
     private Integer userId;
     private String username;
-    private String password;  // Trường password
+    private String password;
     private String salt;
     private String firstname;
     private String lastname;
-
     private boolean enabled;
     private String role;
 
@@ -89,8 +88,10 @@ public class SuperUser implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(this.role));
+    public Collection<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(role));
+        return grantedAuthorities;
     }
 
     @Override
@@ -100,16 +101,21 @@ public class SuperUser implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return enabled;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return enabled;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

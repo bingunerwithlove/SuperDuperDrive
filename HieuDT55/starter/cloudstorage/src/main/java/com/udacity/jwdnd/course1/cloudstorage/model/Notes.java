@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Credentials {
-    private int credentialid;
-    private String url;
-    private String username;
-    private String key;
-    private String password;
+public class Notes {
+    private int noteid;
+    private String notetitle;
+    private String notedescription;
 }
