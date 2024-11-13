@@ -1,26 +1,50 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.SuperUser;
+import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/login")
+//@RequestMapping("/login")
 public class LoginController {
 
-    @GetMapping()
+    @Autowired
+    private UserService userService;
+
+//    @GetMapping()
+    @RequestMapping("/login")
     public String loginView() {
         return "login";
     }
 
-    @PostMapping()
-    public String handleLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password) {
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
+    @PostMapping("/login")
+    public String handleLogin(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            Model model
+    )
+    {
+        SuperUser user = userService.findByUsername(username);
+        System.out.println(user);
+        if (user != null && userService.checkPassword(user, password)) {
+            System.out.println("login success");
+            model.addAttribute("username", user.getUsername());
+            return "home";
+        } else {
+            System.out.println("login error");
+            model.addAttribute("loginError", true);
+            return "login";
+        }
+    }
 
-        return "home";
+    @PostMapping("/logout")
+    public String handleLogout() {
+        return "login";
     }
 }

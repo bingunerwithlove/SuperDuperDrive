@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller()
-@RequestMapping("/signup")
+//@RequestMapping("/signup")
 public class SignupController {
 
     private final UserService userService;
@@ -20,9 +20,8 @@ public class SignupController {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @RequestMapping("/signup")
     public String signupView() {
-        System.out.println(5);
         return "signup";
     }
 
@@ -36,6 +35,7 @@ public class SignupController {
         try {
             userService.register(superUser);
         } catch (Exception e) {
+            e.printStackTrace();
             return "redirect:signup?error";
         }
 

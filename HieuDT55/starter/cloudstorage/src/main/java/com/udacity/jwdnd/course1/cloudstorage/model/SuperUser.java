@@ -12,8 +12,9 @@ public class SuperUser implements UserDetails {
     private String username;
     private String password;  // Trường password
     private String salt;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
+
     private boolean enabled;
     private String role;
 
@@ -23,8 +24,8 @@ public class SuperUser implements UserDetails {
         this.username = username;
         this.salt = salt;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.enabled = true;
         this.role = "USER";
     }
@@ -56,19 +57,19 @@ public class SuperUser implements UserDetails {
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstname;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstname = firstname;
     }
 
     public String getLastName() {
-        return lastName;
+        return lastname;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastname = lastname;
     }
 
     public boolean isEnabled() {
