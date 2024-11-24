@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller()
-//@RequestMapping("/signup")
+@Controller
 public class SignupController {
 
     private final UserService userService;
 
     public SignupController(UserService userService) {
-        System.out.println(userService);
         this.userService = userService;
     }
 
@@ -26,19 +24,21 @@ public class SignupController {
     }
 
     @PostMapping("/signup")
-    public String register(@ModelAttribute("SpringWeb") SuperUser superUser) {
-        System.out.println(superUser);
+    public String register(@ModelAttribute("SpringWeb") SuperUser superUser, Model model) {
         if (superUser == null) {
-            return "redirect:signup";
+            model.addAttribute("signupError", "Invalid input.");
+            return "signup";
         }
 
         try {
             userService.register(superUser);
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:signup?error";
+            model.addAttribute("signupError", "Username already exists. Please choose a different username.");
+            return "signup";
         }
 
-        return "redirect:signup?success";
+        model.addAttribute("signupSuccess", "You have successfully signed up! Please login.");
+        return "login";
     }
 }

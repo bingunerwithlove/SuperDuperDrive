@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
 @Controller
 public class FilesController {
@@ -20,11 +22,16 @@ public class FilesController {
 
     @PostMapping("/files")
     public String saveFile(Authentication authentication, MultipartFile fileUpload) throws IOException {
+        System.out.println(authentication);
+        System.out.println("authenticationnull");
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login?error";
+        }
         SuperUser superUser = (SuperUser) authentication.getPrincipal();
         if (fileUpload.isEmpty()) {
             return "redirect:/result?error";
         }
-        filesService.addFile(fileUpload, superUser.getUserid());
+        filesService.addFile(fileUpload, superUser.getUserId());
         return "redirect:/result?success";
     }
 

@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
 
 public class SuperUser implements UserDetails {
     private Integer userId;
@@ -17,7 +19,6 @@ public class SuperUser implements UserDetails {
     private boolean enabled;
     private String role;
 
-    // Constructor
     public SuperUser(Integer userId, String username, String salt, String password, String firstName, String lastName) {
         this.userId = userId;
         this.username = username;
@@ -29,7 +30,6 @@ public class SuperUser implements UserDetails {
         this.role = "USER";
     }
 
-    // Getter và Setter cho password
     public String getPassword() {
         return password;
     }
@@ -38,7 +38,6 @@ public class SuperUser implements UserDetails {
         this.password = password;
     }
 
-    // Các getter và setter khác
     public Integer getUserId() {
         return userId;
     }
@@ -69,10 +68,6 @@ public class SuperUser implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastname = lastname;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
     }
 
     public void setEnabled(boolean enabled) {

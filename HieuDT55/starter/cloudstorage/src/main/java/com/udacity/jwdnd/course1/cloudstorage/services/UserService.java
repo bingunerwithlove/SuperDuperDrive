@@ -3,12 +3,15 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.SuperUser;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
@@ -39,8 +42,20 @@ public class UserService {
         return superUser;
     }
 
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        SuperUser superUser = userMapper.findByUsername(username);
+        if (superUser == null) {
+            throw new UsernameNotFoundException("Username already exists. Please choose a different username.");
+        }
+        return superUser;
+    }
+
     public SuperUser findByUsername(String username) {
         return userMapper.findByUsername(username);
+    }
+
+    public SuperUser findUserById(int userId) {
+        return userMapper.findOne(userId);
     }
 
     public boolean checkPassword(SuperUser user, String rawPassword) {
