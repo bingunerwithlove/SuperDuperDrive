@@ -19,8 +19,8 @@ public class FilesService {
     private FilesMapper filesMapper;
 
     public ResponseFile getResponseFile(FilesModel file) {
-        String base64 = Base64.getEncoder().encodeToString(file.getFiledata());
-        String dataURL = "data:" + file.getContenttype() + ";base64," + base64;
+        String encodedKey = Base64.getEncoder().encodeToString(file.getFiledata());
+        String dataURL = "data:" + file.getContenttype() + ";base64," + encodedKey;
         return ResponseFile.builder().fileid(file.getFileid()).filename(file.getFilename()).dataURL(dataURL).build();
     }
 
@@ -34,16 +34,30 @@ public class FilesService {
 
     public void addFile(MultipartFile fileUpload, int userid) throws IOException {
         FilesModel file = new FilesModel();
-        System.out.println(userid);
-        try {
-            file.setContenttype(fileUpload.getContentType());
-            file.setFiledata(fileUpload.getBytes());
-            file.setFilename(fileUpload.getOriginalFilename());
-            file.setFilesize(Long.toString(fileUpload.getSize()));
-        } catch (IOException e) {
-            throw e;
+        FilesModel isDuplicateFile = checkDuplicateFile(fileUpload.getOriginalFilename(), userid);
+        System.out.println("合計=" + isDuplicateFile);
+        if (isDuplicateFile != null) {
+            throw new IllegalArgumentException("duplicate");
+        } else {
+            try {
+                file.setContenttype(fileUpload.getContentType());
+                file.setFiledata(fileUpload.getBytes());
+                file.setFilename(fileUpload.getOriginalFilename());
+                file.setFilesize(Long.toString(fileUpload.getSize()));
+                file.setUserid(userid);
+            } catch (IOException e) {
+                throw e;
+            }
         }
         filesMapper.insertFile(file, userid);
+    }
+
+    public FilesModel checkDuplicateFile(String filename, int userid) {
+        List<FilesModel> existingFiles = filesMapper.findByFileNameandUserId(filename, userid);
+        if (existingFiles != null && !existingFiles.isEmpty()) {
+            return existingFiles.get(0);
+        }
+        return null;
     }
 
     public void deleteFile(int fileid) {

@@ -200,6 +200,12 @@ class CloudStorageApplicationTests {
 
 	}
 
+	@Test
+	public void testUnauthorizedAccess() {
+		driver.get("http://localhost:" + this.port + "/home");
+		Assertions.assertEquals("Login", driver.getTitle());
+	}
+
 
 
 }

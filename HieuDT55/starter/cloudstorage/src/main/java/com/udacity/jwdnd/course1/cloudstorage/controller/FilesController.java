@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.ui.Model;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,9 +22,7 @@ public class FilesController {
     private FilesService filesService;
 
     @PostMapping("/files")
-    public String saveFile(Authentication authentication, MultipartFile fileUpload) throws IOException {
-        System.out.println(authentication);
-        System.out.println("authenticationnull");
+    public String saveFile(Authentication authentication, MultipartFile fileUpload, Model model) throws IOException {
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/login?error";
         }
@@ -31,7 +30,18 @@ public class FilesController {
         if (fileUpload.isEmpty()) {
             return "redirect:/result?error";
         }
-        filesService.addFile(fileUpload, superUser.getUserId());
+        try {
+            filesService.addFile(fileUpload, superUser.getUserId());
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            if (e.getMessage() == "duplicate") {
+                model.addAttribute("duplicate", true);
+                return "redirect:/result?duplicate";
+            } else {
+                model.addAttribute("result", "error");
+                model.addAttribute("message", e.getMessage());
+            }
+        }
         return "redirect:/result?success";
     }
 

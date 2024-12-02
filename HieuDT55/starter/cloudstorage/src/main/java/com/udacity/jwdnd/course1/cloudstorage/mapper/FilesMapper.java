@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,6 +22,10 @@ public interface FilesMapper {
 
     @Select("SELECT * FROM FILES WHERE userid = #{userid}")
     public List<FilesModel> findByUserId(int userid);
+
+//    @Select("COUNT(fileid) FROM FILES WHERE filename = #{filename} AND userid = #{userid}")
+    @Select("SELECT * FROM FILES WHERE filename = #{filename} AND userid = #{userid}")
+    List<FilesModel> findByFileNameandUserId(@Param("filename") String filename, @Param("userid") int userid);
 
     @Insert("INSERT INTO FILES (filename, contenttype, filesize, filedata, userid) VALUES (#{file.filename}, #{file.contenttype}, #{file.filesize}, #{file.filedata}, #{userid})")
     public int insertFile(FilesModel file, int userid);

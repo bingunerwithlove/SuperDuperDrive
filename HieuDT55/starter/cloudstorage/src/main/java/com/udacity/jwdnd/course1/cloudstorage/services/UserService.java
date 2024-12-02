@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
         superUser.setEnabled(true);
         superUser.setRole("USER");
         try {
-            System.out.println(superUser);
+//            System.out.println(superUser);
             userMapper.insertUser(superUser);
         } catch (Exception e) {
             e.printStackTrace();

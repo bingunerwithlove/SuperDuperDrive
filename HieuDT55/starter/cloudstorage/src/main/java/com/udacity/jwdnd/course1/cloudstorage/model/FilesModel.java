@@ -6,16 +6,26 @@ public class FilesModel {
     private String contenttype;
     private String filesize;
     private byte[] filedata;
+    private Integer userid;
 
 
     public FilesModel() {}
 
     public FilesModel(int fileid, String filename, String contenttype, String filesize, byte[] filedata) {
+        this.userid = userid;
         this.fileid = fileid;
         this.filename = filename;
         this.contenttype = contenttype;
         this.filesize = filesize;
         this.filedata = filedata;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     public int getFileid() {

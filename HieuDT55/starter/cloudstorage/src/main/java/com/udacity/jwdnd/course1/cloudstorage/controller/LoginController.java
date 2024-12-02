@@ -20,8 +20,8 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginView(Authentication authentication) {
-        System.out.println(authentication);
-        System.out.println(authentication.isAuthenticated());
+//        System.out.println(authentication);
+//        System.out.println(authentication.isAuthenticated());
         if (authentication != null) {
             if (authentication.isAuthenticated()) {
                 return "home";

@@ -22,7 +22,7 @@ public class NotesController {
     @PostMapping("/notes")
     public String createOrUpdateNote(NotesModel note, Authentication authentication, Model model) {
         SuperUser superUser = (SuperUser) authentication.getPrincipal();
-        System.out.println(superUser.getUserId());
+//        System.out.println(superUser.getUserId());
         if (note.getNoteid() > 0) {
             notesService.updateNote(note);
         } else {

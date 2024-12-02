@@ -20,6 +20,13 @@ public class HashService {
     public String getHashedValue(String data, String salt) {
         byte[] hashedValue = null;
 
+
+//        SecureRandom random = new SecureRandom();
+//        byte[] key = new byte[16];
+//        random.nextBytes(key);
+//        String encodedKey = Base64.getEncoder().encodeToString(key);
+//        String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
+//        String decryptedPassword = encryptionService.decryptValue(encryptedPassword, encodedKey);
         int iterCount = 12288;
         int derivedKeyLength = 256;
         KeySpec spec = new PBEKeySpec(data.toCharArray(), salt.getBytes(), iterCount, derivedKeyLength * 8);
