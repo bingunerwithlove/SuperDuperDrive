@@ -35,7 +35,7 @@ public class FilesService {
     public void addFile(MultipartFile fileUpload, int userid) throws IOException {
         FilesModel file = new FilesModel();
         FilesModel isDuplicateFile = checkDuplicateFile(fileUpload.getOriginalFilename(), userid);
-        System.out.println("合計=" + isDuplicateFile);
+//        System.out.println("duplicate=" + isDuplicateFile);
         if (isDuplicateFile != null) {
             throw new IllegalArgumentException("duplicate");
         } else {
